@@ -4,9 +4,9 @@ React hook for using [logic-block](https://github.com/k1moshka/logic-block) in f
 ## Installation
 Just add it to project dependencies
 ```
-yarn add logic-block
+yarn add use-logic-block
 // or
-npm install --save logic-block
+npm install --save use-logic-block
 ```
 
 ## Example
