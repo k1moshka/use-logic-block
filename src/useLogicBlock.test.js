@@ -1,65 +1,85 @@
 import { expect, test } from '@jest/globals'
 import { renderHook, act } from '@testing-library/react-hooks'
+import Block, { createHandler, value } from 'logic-block'
 
-import useLogicBlock from './useLogicBlock'
+import useLogicBlock, { makeCleanBlockCopy } from './useLogicBlock'
 
 test('can handle block', () => {
-  const instance = jest.fn(() => { return { a: 1 } })
-  const blockDummy = jest.fn(() => instance)
+  const blockDummy = Block({ a: value(1) })
 
   const { result: { current } } = renderHook(() => useLogicBlock(blockDummy))
 
   expect(current.value).toEqual({ a: 1 })
   expect(typeof current.update).toBe('function')
-
-  // we do two instances of block for first render value and for continues working with instance
-  expect(blockDummy.mock.calls.length).toBe(2)
-  expect(instance.mock.calls.length).toBe(2)
 })
 
 test('can set initial value', () => {
-  const instance = jest.fn(() => { return { a: 1 } })
-  const blockDummy = jest.fn(() => instance)
+  const blockDummy = Block({ a: value() })
 
-  renderHook(() => useLogicBlock(blockDummy, { a: 222 }))
+  const { result } = renderHook(() => useLogicBlock(blockDummy, { a: 222 }))
 
-  expect(blockDummy.mock.calls.length).toBe(2)
-  expect(blockDummy.mock.calls[0][0]).toEqual({ a: 222 })
+  expect(result.current.value).toEqual({ a: 222 })
 })
 
 test('can handle updates in block', () => {
-  const instance = (handleUpdate) => () => { handleUpdate && handleUpdate(); return { a: 1 } }
-  const blockDummy = jest.fn((_, { handleUpdate } = {}) => {
-    return instance(handleUpdate)
-  })
+  const blockDummy = Block({})
   const onUpdate = jest.fn(() => { })
 
   const { result } = renderHook(() => {
     return useLogicBlock(blockDummy, undefined, onUpdate)
   })
-  expect(onUpdate.mock.calls.length).toBe(1)
+  expect(onUpdate.mock.calls.length).toBe(0)
 
   act(() => { result.current.update({}) })
-  expect(onUpdate.mock.calls.length).toBe(2)
+  expect(onUpdate.mock.calls.length).toBe(1)
+})
+
+test('block handler does not run in calculating initial value', () => {
+  const handlerFn = jest.fn()
+  const block = Block({}, createHandler(handlerFn))
+
+  renderHook(({ block }) => {
+    return useLogicBlock(block)
+  }, { initialProps: { block } })
+
+  expect(handlerFn.mock.calls.length).toBe(1)
 })
 
 test('should update value if block changed', () => {
-  const instance = (handleUpdate) => () => { handleUpdate && handleUpdate(); return { a: 1 } }
-  const blockDummy1 = jest.fn((_, { handleUpdate } = {}) => {
-    return instance(handleUpdate)
-  })
-  const blockDummy2 = jest.fn((_, { handleUpdate } = {}) => {
-    return instance(handleUpdate)
-  })
+  const h1 = jest.fn()
+  const blockDummy1 = Block({}, createHandler(h1))
+  const h2 = jest.fn()
+  const blockDummy2 = Block({}, createHandler(h2))
 
   const hook = renderHook(({ block }) => {
     return useLogicBlock(block)
   }, { initialProps: { block: blockDummy1 }})
 
-  expect(blockDummy1.mock.calls.length).toBe(2)
-  expect(blockDummy2.mock.calls.length).toBe(0)
+  expect(h1.mock.calls.length).toBe(1)
+  expect(h2.mock.calls.length).toBe(0)
 
   hook.rerender({ block: blockDummy2 })
-  expect(blockDummy1.mock.calls.length).toBe(2)
-  expect(blockDummy2.mock.calls.length).toBe(2)
+  expect(h1.mock.calls.length).toBe(1)
+  expect(h2.mock.calls.length).toBe(1)
+})
+
+test('does makeCleanBlockCopy works well', () => {
+  const handlerA = jest.fn()
+  const blockA = Block({ h1: value(2), h2: 2, c: { rr: value(33) } }, createHandler(handlerA))
+  const handlerB = jest.fn()
+  const blockB = Block({  }, createHandler(handlerB))
+  const handlerC = jest.fn()
+  const blockC = Block({ a: blockA, b: blockB, mmm: value(1), mm2: { a: 1 } }, createHandler(handlerC))
+  const handlerD = jest.fn()
+  const blockD = Block({ a: value('a'), b: { val: value('b') }, c: blockC }, createHandler(handlerD))
+
+
+  const newBlock = makeCleanBlockCopy(blockD)
+
+  const instance = newBlock()
+  instance()
+  expect(handlerA.mock.calls.length).toBe(0)
+  expect(handlerB.mock.calls.length).toBe(0)
+  expect(handlerC.mock.calls.length).toBe(0)
+  expect(handlerD.mock.calls.length).toBe(0)
 })

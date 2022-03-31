@@ -1,6 +1,6 @@
 {
   "name": "use-logic-block",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React hook for using block in functional components",
   "main": "lib/index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "core-js": "^3.14.0"
   },
   "peerDependencies": {
+    "logic-block": "^1.2.2",
     "react": ">=16.8.0"
   },
   "devDependencies": {

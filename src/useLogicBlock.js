@@ -1,4 +1,27 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
+import Block, { isBlock } from 'logic-block'
+
+export const makeCleanBlockCopy = (block) => {
+  const scheme = block.__getScheme()
+
+  const clearScheme = (schemeObj = scheme) => {
+    return Object.keys(schemeObj).reduce((acc, key) => {
+      const reducer = schemeObj[key]
+
+      if (isBlock(reducer)) {
+        acc[key] = makeCleanBlockCopy(reducer)
+      } else if (typeof reducer === 'object') {
+        acc[key] = clearScheme(reducer)
+      } else {
+        acc[key] = reducer
+      }
+
+      return acc
+    }, {})
+  }
+
+  return Block(clearScheme())
+}
 
 const handlers = () => {
   let id = 0
@@ -51,7 +74,9 @@ export default function useLogicBlock(block, initialValue, onUpdate) {
   }, [block, onUpdate])
 
   const startValue = useMemo(() => {
-    return block({
+    const dummyBlock = makeCleanBlockCopy(block)
+
+    return dummyBlock({
       ...value,
       ...initialValue
     })()
