@@ -1,6 +1,6 @@
 {
   "name": "use-logic-block",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React hook for using block in functional components",
   "main": "lib/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "core-js": "^3.14.0"
   },
   "peerDependencies": {
-    "logic-block": "^1.2.2",
+    "logic-block": "^1.3.0",
     "react": ">=16.8.0"
   },
   "devDependencies": {
@@ -44,6 +44,8 @@
     "eslint": "^7.28.0",
     "install-peers": "^1.0.3",
     "jest": "^27.0.4",
+    "logic-block": "^1.3.0",
+    "react": "^16.8.0",
     "react-test-renderer": "^17.0.2"
   }
 }

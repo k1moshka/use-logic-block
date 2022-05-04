@@ -1,5 +1,6 @@
 import { expect, test } from '@jest/globals'
 import { renderHook, act } from '@testing-library/react-hooks'
+import { useMemo } from 'react'
 import Block, { createHandler, value } from 'logic-block'
 
 import useLogicBlock, { makeCleanBlockCopy } from './useLogicBlock'
@@ -14,11 +15,33 @@ test('can handle block', () => {
 })
 
 test('can set initial value', () => {
+  const init = { a: 222 }
   const blockDummy = Block({ a: value() })
 
-  const { result } = renderHook(() => useLogicBlock(blockDummy, { a: 222 }))
+  const { result } = renderHook(() => useLogicBlock(blockDummy, init))
 
   expect(result.current.value).toEqual({ a: 222 })
+})
+
+test('should rerender when initial value changed', () => {
+  const block = Block({ a: value(1) })
+  const { result } = renderHook((props) => {
+    const { a } = props
+    const initialValue = useMemo(() => {
+      return {
+        a
+      }
+    }, [a])
+    return useLogicBlock(block, initialValue)
+  }, { initialProps: { a: 1 } })
+
+  act(() => { result.current.update({ a: 2 }) })
+  act(() => { result.current.update({ c: 3 }) })
+  act(() => { result.current.update({ b: 3 }) })
+
+  expect(result.current.value).toEqual(
+    expect.objectContaining({ a: 2 })
+  )
 })
 
 test('can handle updates in block', () => {

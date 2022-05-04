@@ -88,7 +88,7 @@ export default function useLogicBlock(block, initialValue, onUpdate) {
     }, {
       handleUpdate: handleUpdate.callback
     })
-  }, [block])
+  }, [block, initialValue])
 
   useEffect(() => {
     setValue(instance())

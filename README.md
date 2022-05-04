@@ -46,7 +46,7 @@ useLogicBlock is a react hook (function).
 | Argument     | Type                         | Optional? | Description                                                                                                                                                                                            |
 | ------------ | ---------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | block        | `BlockFactory`               | Mandatory | The block which will use for processing value. If block will change during life time of a component, the value will be immediately re-processed with **initialValue** that will be setted on the time. |
-| initialValue | `Object`                     | Optional  | Initial value for block instance. It has effect only on first render. If it will be changed during lifetime of a component, value will not be re-processed.                                            |
+| initialValue | `Object`                     | Optional  | Initial value for block instance. If it will be changed during lifetime of a component, value will be re-rendered with new initial data and instance will be processed.                                |
 | onUpdate     | `(newValue: Object) => void` | Optional  | Callback which will invoke on every update of the value.                                                                                                                                               |
 
 ## Author
