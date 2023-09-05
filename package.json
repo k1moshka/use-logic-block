@@ -4,12 +4,14 @@
   "description": "React hook for using block in functional components",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npx babel src/useLogicBlock.js --out-file lib/index.js"
+    "test": "SET NODE_ENV=testing && jest",
+    "build": "npx babel src/useLogicBlock.ts --out-file lib/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/k1moshka/use-logic-block.git"
   },
+  "types": "./lib/types",
   "files": [
     "lib"
   ],
@@ -29,23 +31,29 @@
     "core-js": "^3.14.0"
   },
   "peerDependencies": {
-    "logic-block": "^1.3.0",
+    "logic-block": "^1.4.2",
     "react": "^16 || ^17 || ^18"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.8",
+    "@babel/plugin-transform-runtime": "^7.22.15",
     "@babel/preset-env": "^7.14.4",
-    "@babel/preset-flow": "^7.14.5",
-    "@testing-library/react-hooks": "^7.0.1",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/runtime": "^7.22.15",
+    "@jest/globals": "^29.6.4",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/jest": "^28.1.6",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.2",
     "babel-preset-jest": "^27.0.1",
-    "eslint": "^7.28.0",
-    "install-peers": "^1.0.3",
     "jest": "^27.0.4",
-    "logic-block": "^1.3.0",
+    "logic-block": "^1.4.2",
     "react": "^16.8.0",
-    "react-test-renderer": "^17.0.2"
+    "react-test-renderer": "^17.0.2",
+    "ts-jest": "^29.1.1",
+    "typescript": "^4.7.4"
   }
 }

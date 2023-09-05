@@ -1,9 +1,9 @@
-import { expect, test } from '@jest/globals'
+// import { expect, test } from '@jest/globals'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { useMemo } from 'react'
-import Block, { createHandler, value } from 'logic-block'
+import { Block, createHandler, value } from 'logic-block'
 
-import useLogicBlock, { makeCleanBlockCopy } from './useLogicBlock'
+import useLogicBlock, { makeCleanBlockCopy } from '..'
 
 test('can handle block', () => {
   const blockDummy = Block({ a: value(1) })
