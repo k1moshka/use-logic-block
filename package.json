@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "SET NODE_ENV=testing && jest",
-    "build": "npx babel src/useLogicBlock.ts --out-file lib/index.js"
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "core-js": "^3.14.0"
   },
   "peerDependencies": {
-    "logic-block": "^1.4.2",
+    "logic-block": "^1.4.3",
     "react": "^16 || ^17 || ^18"
   },
   "devDependencies": {
@@ -50,7 +50,7 @@
     "babel-jest": "^27.0.2",
     "babel-preset-jest": "^27.0.1",
     "jest": "^27.0.4",
-    "logic-block": "^1.4.2",
+    "logic-block": "^1.4.3",
     "react": "^16.8.0",
     "react-test-renderer": "^17.0.2",
     "ts-jest": "^29.1.1",
