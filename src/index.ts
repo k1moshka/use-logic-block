@@ -17,7 +17,7 @@ export const makeCleanBlockCopy = <T>(block: BlockFactory<T>) => {
 
       if (isBlock(reducer)) {
         acc[key] = makeCleanBlockCopy(reducer);
-      } else if (typeof reducer === "object") {
+      } else if (typeof reducer === "object" && reducer !== null) {
         acc[key] = clearScheme(reducer);
       } else {
         acc[key] = reducer;
@@ -61,8 +61,8 @@ function useMemoEx(reducerFn, deps) {
 }
 
 export default function useLogicBlock<T>(
-  block,
-  initialValue?,
+  block: BlockFactory<T>,
+  initialValue?: T,
   onUpdate?: OnUpdateFunction<T>
 ): {
   value: T;
