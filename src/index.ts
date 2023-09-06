@@ -15,7 +15,7 @@ export const makeCleanBlockCopy = <T>(block: BlockFactory<T>) => {
     return Object.keys(schemeObj).reduce((acc, key) => {
       const reducer = schemeObj[key];
 
-      if (isBlock(reducer)) {
+      if (reducer && isBlock(reducer)) {
         acc[key] = makeCleanBlockCopy(reducer);
       } else if (typeof reducer === "object" && reducer !== null) {
         acc[key] = clearScheme(reducer);

@@ -1,6 +1,6 @@
 {
   "name": "use-logic-block",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React hook for using block in functional components",
   "main": "lib/index.js",
   "scripts": {
