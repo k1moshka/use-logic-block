@@ -68,7 +68,7 @@ export default function useLogicBlock<T>(
   value: T;
   update: (
     newValue: RecursivePartial<T> | ((currentValue: T) => RecursivePartial<T>)
-  ) => void;
+  ) => T;
 } {
   const [value, setValue] = useState<T>();
 
