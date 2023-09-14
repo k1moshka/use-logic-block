@@ -62,7 +62,7 @@ function useMemoEx(reducerFn, deps) {
 
 export default function useLogicBlock<T>(
   block: BlockFactory<T>,
-  initialValue?: T,
+  initialValue?: RecursivePartial<T>,
   onUpdate?: OnUpdateFunction<T>
 ): {
   value: T;
